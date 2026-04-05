@@ -651,7 +651,7 @@ function ControlDetailView({ctrl, ctrlIdx, controls, setControls, viewer, onBack
         {tab==="comments" && (
           <div>
             <div style={{maxHeight:360,overflow:"auto",marginBottom:16}}>
-              {ctrl.comments.length===0 && <p style={{color:"#9ca3af",fontSize:13,textAlign:"center",padding:20}}>{t("noCommentsYet",lang||"en")}</p>}
+              {ctrl.comments.length===0 && <p style={{color:"#9ca3af",fontSize:13,textAlign:"left",padding:20}}>{t("noCommentsYet",lang||"en")}</p>}
               {ctrl.comments.map((c,i)=>(
                 <div key={i} style={{display:"flex",gap:10,marginBottom:12,flexDirection:c.from===senderName?"row-reverse":"row"}}>
                   <div style={{width:32,height:32,borderRadius:"50%",background:c.from==="Admin"?"#6366f1":c.from==="System"?"#9ca3af":"#059669",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:12,fontWeight:700,flexShrink:0}}>{c.from==="System"?"S":c.from[0]}</div>
@@ -672,7 +672,7 @@ function ControlDetailView({ctrl, ctrlIdx, controls, setControls, viewer, onBack
         {tab==="audit" && (<div>{ctrl.auditLog.map((a,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:12,padding:"10px 0",borderBottom:i<ctrl.auditLog.length-1?"1px solid #f9fafb":"none"}}><div style={{width:8,height:8,borderRadius:"50%",background:"#6366f1",flexShrink:0}}/><div style={{flex:1,fontSize:13,color:"#374151"}}>{a.action}</div><span style={{fontSize:11,color:"#9ca3af",whiteSpace:"nowrap"}}>{a.time}</span></div>))}</div>)}
         {tab==="evidence" && (
           <div>
-            {ctrl.evidence.length===0 && <p style={{color:"#9ca3af",fontSize:13,textAlign:"center",padding:20}}>{t("noEvidenceYet",lang||"en")}</p>}
+            {ctrl.evidence.length===0 && <p style={{color:"#9ca3af",fontSize:13,textAlign:"left",padding:20}}>{t("noEvidenceYet",lang||"en")}</p>}
             {ctrl.evidence.map((f,i)=>(<div key={i} style={{display:"flex",alignItems:"center",gap:10,padding:"10px 12px",borderRadius:8,background:"#f9fafb",marginBottom:8}}><FileText size={16} color="#6366f1"/><span style={{fontSize:13,color:"#374151",fontWeight:500,flex:1}}>{f}</span><span style={{fontSize:11,color:"#9ca3af"}}>{t("uploaded",lang||"en")}</span></div>))}
             {!isAdmin && ctrl.workflow==="Open" && <button onClick={uploadEvidence} style={{display:"flex",alignItems:"center",gap:6,marginTop:12,padding:"10px 16px",borderRadius:10,border:"2px dashed #d1d5db",background:"#fff",color:"#6b7280",fontSize:13,fontWeight:600,cursor:"pointer",width:"100%",justifyContent:"center"}}>{t("uploadEvidence",lang||"en")}</button>}
           </div>
@@ -875,7 +875,18 @@ function RadarTooltipContent({active,payload}) {
     <div style={{display:"flex",alignItems:"center",gap:8}}><span style={{fontSize:20,fontWeight:800,color:gc(d.compliance)}}>{d.compliance}%</span><span style={{padding:"2px 6px",borderRadius:4,fontSize:10,fontWeight:700,background:gc(d.compliance)+"22",color:gc(d.compliance)}}>{gl(d.compliance)}</span></div>
   </div>);
 }
-function RadarDot(props) { const {cx,cy}=props; if(!cx||!cy) return null; return <circle cx={cx} cy={cy} r={6} fill="#9ca3af" stroke="#fff" strokeWidth={2} style={{cursor:"pointer"}}/>; }
+function RadarDot(props) {
+  const {cx,cy,payload,onDotClick}=props;
+  if(!cx||!cy) return null;
+  return (
+    <circle
+      cx={cx} cy={cy} r={8}
+      fill="#059669" stroke="#fff" strokeWidth={2}
+      style={{cursor:"pointer"}}
+      onClick={()=>{ if(onDotClick && payload) onDotClick(payload); }}
+    />
+  );
+}
 
 // ═══ DOMAIN DETAIL (Admin drill-down) ═══
 function DomainDetail({domain, buName, controls, setControls, onBack, onOpenControl, lang}) {
@@ -1089,7 +1100,8 @@ function SideNav({lang, onNav, currentNav, isOpen, onClose, role}) {
         </div>
         {/* Footer */}
         <div style={{padding:"16px 20px",borderTop:"1px solid #f0f0f0",fontSize:10,color:"#9ca3af"}}>
-          NDMO Compliance Portal · v1.0
+          <div>NDMO Compliance Portal · v1.0</div>
+          <div style={{marginTop:2,color:"#c4c9d1"}}>© 2026 Mohammed Adnan</div>
         </div>
       </div>
     </>
@@ -1108,6 +1120,16 @@ function MenuButton({lang, onClick}) {
   );
 }
 
+// ═══ APP FOOTER ═══
+function AppFooter() {
+  return (
+    <div style={{borderTop:"1px solid #f0f0f0",background:"#fff",padding:"10px 28px",display:"flex",alignItems:"center",justifyContent:"space-between",fontSize:11,color:"#9ca3af"}}>
+      <span>NDMO Compliance Portal · v1.0 · Prototype</span>
+      <span>Developed by <strong style={{color:"#6b7280",fontWeight:600}}>Mohammed Adnan</strong> · © 2026</span>
+    </div>
+  );
+}
+
 function RestrictedPage({section, lang, onBack}) {
   const configs = {
     aiEvidence: {title:"aiEvTitle",desc:"aiEvDesc",what:"aiEvWhat",why:"aiEvWhy",icon:"🔬",color:"#6366f1"},
@@ -1119,7 +1141,7 @@ function RestrictedPage({section, lang, onBack}) {
   return (
     <div style={{maxWidth:700,margin:"0 auto",padding:"40px 20px"}}>
       <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",cursor:"pointer",color:"#6b7280",fontSize:13,fontWeight:600,marginBottom:24,padding:0}}><ArrowLeft size={16}/> {t("backToDashboardNav",lang)}</button>
-      <div style={{textAlign:"center",marginBottom:32}}>
+      <div style={{textAlign:"left",marginBottom:32}}>
         <span style={{fontSize:48}}>{cfg.icon}</span>
         <h1 style={{margin:"12px 0 8px",fontSize:26,fontWeight:800,color:"#111827"}}>{t(cfg.title,lang)}</h1>
         <span style={{display:"inline-block",padding:"4px 16px",borderRadius:20,background:"#fef2f2",color:"#dc2626",fontSize:12,fontWeight:700,letterSpacing:"0.05em"}}>{t("restricted",lang)}</span>
@@ -1132,7 +1154,7 @@ function RestrictedPage({section, lang, onBack}) {
         <h3 style={{margin:"0 0 8px",fontSize:14,fontWeight:700,color:cfg.color}}>{t("whyItMatters",lang)}</h3>
         <p style={{margin:0,fontSize:13,color:"#374151",lineHeight:1.7}}>{t(cfg.why,lang)}</p>
       </div>
-      <div style={{textAlign:"center",padding:20,background:"#fef2f2",borderRadius:12,border:"1px solid #fecaca"}}>
+      <div style={{textAlign:"left",padding:20,background:"#fef2f2",borderRadius:12,border:"1px solid #fecaca"}}>
         <p style={{margin:0,fontSize:13,color:"#991b1b",fontWeight:600}}>{t("accessContactAdmin",lang)}</p>
       </div>
     </div>
@@ -1148,7 +1170,7 @@ function ComingSoonPage({section, lang, onBack}) {
   return (
     <div style={{maxWidth:700,margin:"0 auto",padding:"40px 20px"}}>
       <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",cursor:"pointer",color:"#6b7280",fontSize:13,fontWeight:600,marginBottom:24,padding:0}}><ArrowLeft size={16}/> {t("backToDashboardNav",lang)}</button>
-      <div style={{textAlign:"center",marginBottom:32}}>
+      <div style={{textAlign:"left",marginBottom:32}}>
         <span style={{fontSize:48}}>{cfg.icon}</span>
         <h1 style={{margin:"12px 0 8px",fontSize:26,fontWeight:800,color:"#111827"}}>{t(cfg.title,lang)}</h1>
         <span style={{display:"inline-block",padding:"4px 16px",borderRadius:20,background:"#fffbeb",color:"#d97706",fontSize:12,fontWeight:700,letterSpacing:"0.05em"}}>{t("comingSoon",lang)}</span>
@@ -1161,7 +1183,7 @@ function ComingSoonPage({section, lang, onBack}) {
         <h3 style={{margin:"0 0 8px",fontSize:14,fontWeight:700,color:cfg.color}}>{t("whyItMatters",lang)}</h3>
         <p style={{margin:0,fontSize:13,color:"#374151",lineHeight:1.7}}>{t(cfg.why,lang)}</p>
       </div>
-      <div style={{textAlign:"center",padding:20,background:"#fffbeb",borderRadius:12,border:"1px solid #fde68a"}}>
+      <div style={{textAlign:"left",padding:20,background:"#fffbeb",borderRadius:12,border:"1px solid #fde68a"}}>
         <p style={{margin:0,fontSize:13,color:"#92400e",fontWeight:600}}>{t("featureUnderDev",lang)}</p>
       </div>
     </div>
@@ -1260,7 +1282,7 @@ function AboutPortalPage({lang, onBack}) {
   return (
     <div style={{maxWidth:700,margin:"0 auto",padding:"40px 20px"}}>
       <button onClick={onBack} style={{display:"flex",alignItems:"center",gap:6,background:"none",border:"none",cursor:"pointer",color:"#6b7280",fontSize:13,fontWeight:600,marginBottom:24,padding:0}}><ArrowLeft size={16}/> {t("backToDashboardNav",lang)}</button>
-      <div style={{textAlign:"center",marginBottom:28}}>
+      <div style={{textAlign:"left",marginBottom:28}}>
         <Shield size={40} color="#059669" strokeWidth={2}/>
         <h1 style={{margin:"12px 0 8px",fontSize:26,fontWeight:800,color:"#111827"}}>{t("aboutTitle",lang)}</h1>
       </div>
@@ -1268,7 +1290,7 @@ function AboutPortalPage({lang, onBack}) {
         <h3 style={{margin:"0 0 8px",fontSize:16,fontWeight:700,color:"#0C7C8A"}}>{t("aboutObjective",lang)}</h3>
         <p style={{margin:"0 0 24px",fontSize:13,color:"#374151",lineHeight:1.8}}>{t("aboutObjectiveText",lang)}</p>
         <h3 style={{margin:"0 0 12px",fontSize:16,fontWeight:700,color:"#0C7C8A"}}>{t("aboutValueTitle",lang)}</h3>
-        <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        <div style={{display:"flex",flexDirection:"column",gap:8,marginBottom:24}}>
           {values.map((v,i)=>(
             <div key={i} style={{display:"flex",alignItems:"flex-start",gap:10,padding:"8px 12px",borderRadius:8,background:"#f0fdf4"}}>
               <CheckCircle size={16} color="#059669" style={{flexShrink:0,marginTop:2}}/>
@@ -1276,8 +1298,23 @@ function AboutPortalPage({lang, onBack}) {
             </div>
           ))}
         </div>
+        <h3 style={{margin:"0 0 10px",fontSize:16,fontWeight:700,color:"#0C7C8A"}}>Concept, Design & Development</h3>
+        <div style={{background:"#f8fafc",borderRadius:12,padding:"18px 20px",border:"1px solid #e5e7eb"}}>
+          <div style={{display:"flex",alignItems:"flex-start",gap:14}}>
+            <div style={{width:44,height:44,borderRadius:"50%",background:"linear-gradient(135deg,#059669,#34d399)",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:18,fontWeight:800,flexShrink:0}}>A</div>
+            <div>
+              <div style={{fontSize:15,fontWeight:800,color:"#111827",marginBottom:2}}>Mohammed Adnan</div>
+              <div style={{fontSize:12,color:"#6366f1",fontWeight:600,marginBottom:8}}>Data Management Leader · 18+ Years Experience</div>
+              <p style={{margin:"0 0 8px",fontSize:12,color:"#374151",lineHeight:1.7}}>This portal was conceived, designed, and developed by Mohammed Adnan — a certified Data Management professional with expertise spanning project management, product management, and data governance across Saudi Arabia and the wider region.</p>
+              <p style={{margin:0,fontSize:12,color:"#374151",lineHeight:1.7}}>The concept draws on direct practitioner experience with NDMO compliance assessments, deep familiarity with the NDMO Standard (all 15 domains, 85 controls, 198 specifications), and hands-on implementation work across large-scale government and enterprise data programmes.</p>
+            </div>
+          </div>
+        </div>
       </div>
-      <div style={{textAlign:"center",color:"#9ca3af",fontSize:11}}>v1.0 · March 2026</div>
+      <div style={{fontSize:11,color:"#9ca3af",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
+        <span>NDMO Compliance Portal · v1.0 · Prototype</span>
+        <span>© 2026 Mohammed Adnan · All rights reserved</span>
+      </div>
     </div>
   );
 }
@@ -1491,6 +1528,7 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
         {SideNavEl}
         {TopBar}
         <NavPageRouter navPage={navPage} lang={lang} onBack={()=>setNavPage(null)}/>
+        <AppFooter/>
       </div>
     );
   }
@@ -1511,6 +1549,7 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
           ]}/>
           <ControlDetailView ctrl={controls[selCtrlIdx]} ctrlIdx={selCtrlIdx} controls={controls} setControls={setControls} viewer="admin" lang={lang} onBack={()=>setSelCtrlIdx(null)}/>
         </div>
+        <AppFooter/>
       </div>
     );
   }
@@ -1531,6 +1570,7 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
           ]}/>
           <DomainDetail lang={lang} domain={selDomain} buName={(curBU?.name||"")+" › "+sectorName} controls={controls} setControls={setControls} onBack={()=>setSelDomain(null)} onOpenControl={(idx)=>setSelCtrlIdx(idx)}/>
         </div>
+        <AppFooter/>
       </div>
     );
   }
@@ -1571,7 +1611,12 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
                 <RadarChart data={radarData} onClick={handleRadarClick} style={{cursor:"pointer"}}>
                   <PolarGrid stroke="#e5e7eb" gridType="polygon"/><PolarAngleAxis dataKey="domain" tick={{fontSize:10,fill:"#6b7280",fontWeight:600}}/><PolarRadiusAxis domain={[0,100]} tick={{fontSize:9,fill:"#9ca3af"}} axisLine={false}/>
                   <Radar name="Background" dataKey="fullMark" fill="#9ca3af" fillOpacity={0.04} stroke="none" dot={false}/>
-                  <Radar dataKey="compliance" stroke="#059669" fill="#059669" fillOpacity={0.12} strokeWidth={2} dot={<RadarDot/>}/>
+                  <Radar dataKey="compliance" stroke="#059669" fill="#059669" fillOpacity={0.12} strokeWidth={2}
+                    dot={(dotProps) => {
+                      const dom = domains.find(d => d.id === dotProps.payload?.domain);
+                      return <RadarDot {...dotProps} onDotClick={() => { if(dom){ setSelDomain(dom); } }} />;
+                    }}
+                  />
                   <RTooltip content={<RadarTooltipContent/>} wrapperStyle={{outline:"none"}}/>
                 </RadarChart>
               </ResponsiveContainer>
@@ -1579,7 +1624,7 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
             <div style={{flex:1,display:"flex",flexDirection:"column",gap:16}}>
               <div style={{background:"#fff",borderRadius:16,padding:20,boxShadow:"0 1px 3px rgba(0,0,0,0.06)",border:"1px solid #f0f0f0",flex:1}}>
                 <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}><AlertTriangle size={16} color="#dc2626"/><h3 style={{margin:0,fontSize:13,fontWeight:700,color:"#dc2626"}}>{t("domainsAtRisk",lang)}</h3></div>
-                {domains.filter(d=>d.compliance<55).sort((a,b)=>a.compliance-b.compliance).length===0?(<div style={{padding:"20px 0",textAlign:"center",color:"#9ca3af",fontSize:13}}>{t("allAbove55",lang)}</div>):(
+                {domains.filter(d=>d.compliance<55).sort((a,b)=>a.compliance-b.compliance).length===0?(<div style={{padding:"20px 0",textAlign:"left",color:"#9ca3af",fontSize:13}}>{t("allAbove55",lang)}</div>):(
                   domains.filter(d=>d.compliance<55).sort((a,b)=>a.compliance-b.compliance).map(d=>(<button key={d.id} onClick={()=>setSelDomain(d)} style={{display:"flex",alignItems:"center",width:"100%",padding:"8px 0",background:"none",border:"none",cursor:"pointer",borderBottom:"1px solid #fef2f2",textAlign:"left"}}><StatusDot value={d.compliance}/><div style={{flex:1}}><div style={{fontSize:13,fontWeight:600,color:"#374151"}}>{d.name}</div></div><span style={{fontSize:14,fontWeight:800,color:gc(d.compliance)}}>{d.compliance}%</span></button>))
                 )}
               </div>
@@ -1617,6 +1662,7 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
             </table>
           </div>
         </div>
+        <AppFooter/>
       </div>
     );
   }
@@ -1688,6 +1734,7 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
 
           <BUSectorTable bu={curBU} allControls={allControls} lang={lang} onClickSector={(sid)=>goSector(selBU,sid)}/>
         </div>
+        <AppFooter/>
       </div>
     );
   }
@@ -1724,6 +1771,7 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
         {/* BU Heatmap Cards */}
         <NEOMHeatmap allControls={allControls} lang={lang} onClickBU={(buId)=>goBU(buId)} onClickSector={(buId,sid)=>goSector(buId,sid)}/>
       </div>
+      <AppFooter/>
     </div>
   );
 }
@@ -1823,6 +1871,7 @@ function StewardDashboard({onLogout, allControls, setAllControls, lang, setLang}
         {SideNavEl}
         {TopBar}
         <NavPageRouter navPage={navPage} lang={lang} onBack={()=>setNavPage(null)}/>
+        <AppFooter/>
       </div>
     );
   }
@@ -1839,6 +1888,7 @@ function StewardDashboard({onLogout, allControls, setAllControls, lang, setLang}
           </div>
           <ControlDetailView ctrl={controls[selCtrlIdx]} ctrlIdx={selCtrlIdx} controls={controls} setControls={setControls} viewer="steward" lang={lang} onBack={()=>setSelCtrlIdx(null)}/>
         </div>
+        <AppFooter/>
       </div>
     );
   }
@@ -1895,7 +1945,7 @@ function StewardDashboard({onLogout, allControls, setAllControls, lang, setLang}
           <div style={{width:280,background:"#fff",borderRadius:16,padding:20,boxShadow:"0 1px 3px rgba(0,0,0,0.06)",border:"1px solid #f0f0f0",flexShrink:0,display:"flex",flexDirection:"column"}}>
             <h3 style={{margin:"0 0 14px",fontSize:13,fontWeight:700,color:"#374151",display:"flex",alignItems:"center",gap:6}}><AlertTriangle size={15} color="#dc2626"/> {t("pendingActions",lang)}</h3>
             <div style={{flex:1,overflow:"auto"}}>
-              {actions.length===0 && <div style={{textAlign:"center",padding:20,color:"#9ca3af",fontSize:12}}>{t("noPendingActions",lang)}</div>}
+              {actions.length===0 && <div style={{textAlign:"left",padding:20,color:"#9ca3af",fontSize:12}}>{t("noPendingActions",lang)}</div>}
               {actions.map((a,i)=>(
                 <div key={i} style={{display:"flex",alignItems:"center",gap:8,padding:"9px 0",borderBottom:i<actions.length-1?"1px solid #f9fafb":"none"}}>
                   <StatusDot value={a.type==="alert"?30:a.type==="upload"?55:60}/>
@@ -1962,6 +2012,7 @@ function StewardDashboard({onLogout, allControls, setAllControls, lang, setLang}
           </div>
         </div>
       </div>
+      <AppFooter/>
     </div>
   );
 }
