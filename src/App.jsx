@@ -1524,7 +1524,7 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
   // ─── NAV PAGES ───
   if (navPage) {
     return (
-      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif"}}>
+      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>
         {SideNavEl}
         {TopBar}
         <NavPageRouter navPage={navPage} lang={lang} onBack={()=>setNavPage(null)}/>
@@ -1537,10 +1537,10 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
   if (selCtrlIdx !== null && selSectorId) {
     const sectorName = getSector(selSectorId)?.name || "";
     return (
-      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif"}}>
+      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>
         {SideNavEl}
         {TopBar}
-        <div style={{padding:28}}>
+        <div style={{padding:28,textAlign:"left"}}>
           <AdminBreadcrumb items={[
             {label:t("neomOverview",lang),onClick:goNEOM},
             {label:curBU?.name,onClick:()=>goBU(selBU)},
@@ -1558,10 +1558,10 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
   if (selDomain && selSectorId) {
     const sectorName = getSector(selSectorId)?.name || "";
     return (
-      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif"}}>
+      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>
         {SideNavEl}
         {TopBar}
-        <div style={{padding:28}}>
+        <div style={{padding:28,textAlign:"left"}}>
           <AdminBreadcrumb items={[
             {label:t("neomOverview",lang),onClick:goNEOM},
             {label:curBU?.name,onClick:()=>goBU(selBU)},
@@ -1580,10 +1580,10 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
     const sectorName = getSector(selSectorId)?.name || "";
     const readyCount = controls.filter(c=>c.workflow==="Ready for Review").length;
     return (
-      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif"}}>
+      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>
         {SideNavEl}
         {TopBar}
-        <div style={{padding:28}}>
+        <div style={{padding:28,textAlign:"left"}}>
           <AdminBreadcrumb items={[
             {label:t("neomOverview",lang),onClick:goNEOM},
             {label:curBU?.name,onClick:()=>goBU(selBU)},
@@ -1683,10 +1683,10 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
     });
     const buRadar = buDomains.map(d=>({domain:d.id,fullName:d.name,compliance:d.compliance,fullMark:100}));
     return (
-      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif"}}>
+      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>
         {SideNavEl}
         {TopBar}
-        <div style={{padding:28}}>
+        <div style={{padding:28,textAlign:"left"}}>
           <AdminBreadcrumb items={[{label:t("neomOverview",lang),onClick:goNEOM},{label:curBU.name}]}/>
           <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
             <div>
@@ -1742,10 +1742,10 @@ function AdminDashboard({onLogout, allControls, setAllControls, lang, setLang}) 
   // ─── NEOM OVERVIEW (default landing) ───
   const neomAvg = BUS.length > 0 ? Math.round(BUS.map(bu=>computeBUStats(bu,allControls).buAvg).reduce((a,v)=>a+v,0)/BUS.length) : 0;
   return (
-    <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif"}}>
+    <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>
       {SideNavEl}
       {TopBar}
-      <div style={{padding:28}}>
+      <div style={{padding:28,textAlign:"left"}}>
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:24}}>
           <div>
             <h1 style={{margin:0,fontSize:26,fontWeight:800,color:"#111827",letterSpacing:"-0.02em"}}>{t('neomComplianceOverview',lang)}</h1>
@@ -1867,7 +1867,7 @@ function StewardDashboard({onLogout, allControls, setAllControls, lang, setLang}
   // ─── NAV PAGES ───
   if (navPage) {
     return (
-      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif"}}>
+      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>
         {SideNavEl}
         {TopBar}
         <NavPageRouter navPage={navPage} lang={lang} onBack={()=>setNavPage(null)}/>
@@ -1879,10 +1879,10 @@ function StewardDashboard({onLogout, allControls, setAllControls, lang, setLang}
   // ─── CONTROL DETAIL ───
   if (selCtrlIdx !== null) {
     return (
-      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif"}}>
+      <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>
         {SideNavEl}
         {TopBar}
-        <div style={{padding:28}}>
+        <div style={{padding:28,textAlign:"left"}}>
           <div style={{display:"flex",alignItems:"center",gap:4,marginBottom:16,fontSize:12,color:"#9ca3af"}}>
             <span>{bu?.icon} {bu?.name}</span><span>›</span><span style={{color:"#6366f1",fontWeight:600}}>{sec?.name}</span><span>›</span><span style={{color:"#374151",fontWeight:700}}>{controls[selCtrlIdx]?.cid}</span>
           </div>
@@ -1899,10 +1899,10 @@ function StewardDashboard({onLogout, allControls, setAllControls, lang, setLang}
   const sectorCompliance = allDom.length > 0 ? Math.round(allDom.reduce((a,d)=>a+d.compliance,0)/allDom.length) : 0;
 
   return (
-    <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif"}}>
+    <div style={{minHeight:"100vh",background:"#f8fafc",fontFamily:"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>
       {SideNavEl}
       {TopBar}
-      <div style={{padding:28}}>
+      <div style={{padding:28,textAlign:"left"}}>
         {/* Header */}
         <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start",marginBottom:24}}>
           <div>
@@ -2031,7 +2031,7 @@ export default function App() {
   const login = r => { setRole(r); setPage("dash"); };
   const logout = () => { setRole(null); setPage("login"); };
 
-  const wrap = (child) => <div dir={lang==="ar"?"rtl":"ltr"} style={{fontFamily:lang==="ar"?"'Noto Sans Arabic','Segoe UI',sans-serif":"'DM Sans','Segoe UI',sans-serif"}}>{child}</div>;
+  const wrap = (child) => <div dir={lang==="ar"?"rtl":"ltr"} style={{fontFamily:lang==="ar"?"'Noto Sans Arabic','Segoe UI',sans-serif":"'DM Sans','Segoe UI',sans-serif",textAlign:"left"}}>{child}</div>;
 
   if (page==="login") return wrap(<LoginPage onLogin={login} lang={lang} setLang={setLang}/>);
   if (role==="admin") return wrap(<AdminDashboard onLogout={logout} allControls={allControls} setAllControls={setAllControls} lang={lang} setLang={setLang}/>);
