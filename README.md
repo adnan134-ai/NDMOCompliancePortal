@@ -1,7 +1,7 @@
 # Objective
 The NDMO Compliance Portal is a centralized platform designed to help Saudi government entities manage, track, and report compliance with the National Data Management Office (NDMO) Data Management and Personal Data Protection Standards across all 15 domains, 85 controls, and 198 specifications.
 
-# Business Value
+## Business Value
 1. Avoid regulatory penalties up to SAR 5 million per violation
 2. Reduce compliance management effort by up to 60% through automation
 3. Ensure audit readiness with complete evidence trails and audit logs
